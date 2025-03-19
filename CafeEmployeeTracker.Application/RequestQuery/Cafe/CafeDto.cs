@@ -7,7 +7,7 @@
         public string Description { get; set; }
         public string Logo { get; set; }
         public string Location { get; set; }
-        public int Employees { get; internal set; }
+        public int EmployeeCount { get; internal set; }
 
         public CafeDto() { }
         public CafeDto(Guid id, string name, string description, string logo, string location)

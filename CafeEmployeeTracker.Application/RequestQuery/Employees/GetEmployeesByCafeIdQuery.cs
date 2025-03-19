@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CafeEmployeeTracker.Application.RequestQuery.Employees
 {
-    public record GetEmployeesByCafeIdQuery(Guid CafeId) : IRequest<IEnumerable<EmployeeDto>>;
+    public record GetEmployeesByCafeIdQuery(Guid cafeId) : IRequest<IEnumerable<EmployeeDto>>;
     public class GetEmployeesByCafeIdQueryHandler : IRequestHandler<GetEmployeesByCafeIdQuery, IEnumerable<EmployeeDto>>
     {
         private readonly ICafeRepository _cafeRepository;
@@ -20,12 +20,12 @@ namespace CafeEmployeeTracker.Application.RequestQuery.Employees
         }
         public async Task<IEnumerable<EmployeeDto>> Handle(GetEmployeesByCafeIdQuery request, CancellationToken cancellationToken)
         {
-            var cafe = await _cafeRepository.GetCafeByIdAsync(request.CafeId);
+            var cafe = await _cafeRepository.GetCafeByIdAsync(request.cafeId);
             if (cafe == null)
             {
                 throw new Exception("Cafe not found");
             }
-            var employees = await _employeeRepository.GetEmployeesByCafeIdAsync(request.CafeId);
+            var employees = await _employeeRepository.GetEmployeesByCafeIdAsync(cafe.Id);
             return employees.Select(employee => new EmployeeDto
             {
                 Id = !string.IsNullOrEmpty(employee.Employee.Id) ? employee.Employee.Id : string.Empty,

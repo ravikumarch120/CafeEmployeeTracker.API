@@ -23,7 +23,7 @@ namespace CafeEmployeeTracker.Application.RequestQuery.Cafe
 
         public async Task<IEnumerable<CafeDto>> Handle(GetCafesByLocationQuery request, CancellationToken cancellationToken)
         {
-            var cafes = await _cafeRepository.GetAllAsync(request?.Location);
+            var cafes = await _cafeRepository.GetAllCafesByLocationAsync(request?.Location);
             return cafes.Select(cafe => new CafeDto
             {
                 Id = cafe.Id != Guid.Empty ? cafe.Id : Guid.Empty,
@@ -31,7 +31,7 @@ namespace CafeEmployeeTracker.Application.RequestQuery.Cafe
                 Description = cafe.Description ?? string.Empty,
                 Logo = cafe.Logo ?? string.Empty,
                 Location = cafe.Location ?? string.Empty,
-                Employees = cafe.Employees?.Count ?? 0
+                EmployeeCount = cafe.Employees?.Count ?? 0
             });
         }
     }

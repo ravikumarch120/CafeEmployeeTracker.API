@@ -4,6 +4,7 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
 {
     public class CafeDto
     {
+        public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

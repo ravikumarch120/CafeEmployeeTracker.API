@@ -25,7 +25,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder.RegisterType<CafeRepository>().As<ICafeRepository>(); // Fix the method call and type names
-    containerBuilder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>();   
+    containerBuilder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>();
     //containerBuilder.RegisterType<CafeRepository>().As<ICafeRepository>().InstancePerLifetimeScope();
     //containerBuilder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>().InstancePerLifetimeScope();
 });
@@ -33,6 +33,18 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 // Add Layer Service Dependencies
 builder.Services.AddServiceApplication(); // This method should be defined in the CafeEmployeeTracker.Application namespace
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -56,6 +68,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use CORS policy
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 

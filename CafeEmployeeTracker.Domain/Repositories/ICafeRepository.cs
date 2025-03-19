@@ -9,7 +9,8 @@ namespace CafeEmployeeTracker.Domain.Repositories
 {
     public interface ICafeRepository
     {
-        Task<List<Cafe>> GetAllAsync(string? location);
+        Task<List<(Cafe Cafe, int EmployeesCount)>> GetAllCafesAsync();
+        Task<List<Cafe>> GetAllCafesByLocationAsync(string? location);
         Task CreateAsync(Cafe cafe);
         Task UpdateCafeDetailsAsync(Cafe cafe);
         Task DeleteAsync(Guid id);

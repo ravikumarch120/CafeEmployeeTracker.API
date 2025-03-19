@@ -8,11 +8,11 @@ namespace CafeEmployeeTracker.API.Controllers.Employee
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public EmployeeController(IMediator mediator)
+        public EmployeesController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -20,6 +20,8 @@ namespace CafeEmployeeTracker.API.Controllers.Employee
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+
         public async Task<IActionResult> GetEmployees([FromQuery] Guid cafeId)
         {
             var query = new GetEmployeesByCafeIdQuery(cafeId);

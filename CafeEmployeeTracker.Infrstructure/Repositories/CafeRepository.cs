@@ -34,7 +34,20 @@ namespace CafeEmployeeTracker.Infrstructure.Repositories
             }
         }
 
-        public Task<List<Cafe>> GetAllAsync(string? location)
+        public async Task<List<(Cafe Cafe, int EmployeesCount)>> GetAllCafesAsync()
+        {
+            var cafesWithEmployeeCount = await _cafeEmployeeTrackerDbContext.Cafes
+                .Select(cafe => new
+                {
+                    Cafe = cafe,
+                    EmployeesCount = _cafeEmployeeTrackerDbContext.EmployeeCafes.Count(ec => ec.CafeId == cafe.Id)
+                })
+                .ToListAsync();
+
+            return cafesWithEmployeeCount.Select(c => (c.Cafe, c.EmployeesCount)).ToList();
+        }
+
+        public Task<List<Cafe>> GetAllCafesByLocationAsync(string? location)
         {
             List<Cafe> res;
             if (string.IsNullOrEmpty(location))

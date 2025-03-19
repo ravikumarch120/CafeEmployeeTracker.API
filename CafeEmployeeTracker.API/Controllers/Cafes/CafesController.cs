@@ -16,10 +16,13 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
         public IActionResult Get()
         {
-            return Ok();
+            var result = _mediator.Send(new GetAllCafesQuery());
+            return Ok(result.Result);
         }
 
         [HttpGet("by-location")]
@@ -30,6 +33,8 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
             var result = await _mediator.Send(new GetCafesByLocationQuery(location));
             return Ok(result);
         }
+
+
         [HttpPost("cafe")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -55,7 +60,7 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
                 return BadRequest();
             }
 
-            var result = await _mediator.Send(new UpdateCafeCommand(request.Name, request.Name, request.Description, request.Logo, request.Location));
+            var result = await _mediator.Send(new UpdateCafeCommand(request.Id, request.Name, request.Description, request.Logo, request.Location));
             if (!result.Equals(Unit.Value))
             {
                 return NotFound();
@@ -75,6 +80,19 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
                 return NoContent();
             }
             return NotFound();
+        }
+
+        [HttpGet("cafe/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCafeById(Guid id)
+        {
+            var result = await _mediator.Send(new GetCafeByIdQuery(id));
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
 
 
