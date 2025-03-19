@@ -56,7 +56,7 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
             }
 
             var result = await _mediator.Send(new UpdateCafeCommand(request.Name, request.Name, request.Description, request.Logo, request.Location));
-            if (result.Equals(Unit.Value))
+            if (!result.Equals(Unit.Value))
             {
                 return NotFound();
             }
@@ -70,7 +70,7 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
         public async Task<IActionResult> DeleteCafe(Guid id)
         {
             var result = await _mediator.Send(new DeleteCafeCommand(id));
-            if (result.Equals(Unit.Value))
+            if (!result.Equals(Unit.Value))
             {
                 return NoContent();
             }

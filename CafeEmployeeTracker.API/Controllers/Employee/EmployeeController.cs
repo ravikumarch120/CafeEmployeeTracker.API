@@ -52,7 +52,7 @@ namespace CafeEmployeeTracker.API.Controllers.Employee
             }
 
             var result = await _mediator.Send(new UpdateEmployeeCommand(request.Id, request.Name, request.EmailAddress, request.PhoneNumber));
-            if (result.Equals(Unit.Value))
+            if (!result.Equals(Unit.Value))
             {
                 return NotFound();
             }
@@ -71,7 +71,7 @@ namespace CafeEmployeeTracker.API.Controllers.Employee
             }
 
             var result = await _mediator.Send(new DeleteEmployeeCommand(id));
-            if (result.Equals(Unit.Value))
+            if (!result.Equals(Unit.Value))
             {
                 return NotFound();
             }
