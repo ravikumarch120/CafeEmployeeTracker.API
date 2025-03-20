@@ -46,7 +46,7 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
             }
 
             var result = await _mediator.Send(new CreateCafeCommand(request.Name, request.Description, request.Location));
-            return CreatedAtAction(nameof(Get), new { id = result }, result);
+            return Ok(result);
         }
        
         [HttpPut("cafe")]
@@ -61,11 +61,6 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
             }
 
             var result = await _mediator.Send(new UpdateCafeCommand(request.Id, request.Name, request.Description, request.Logo, request.Location));
-            if (!result.Equals(Unit.Value))
-            {
-                return NotFound();
-            }
-
             return Ok(result);
         }
 
@@ -75,7 +70,7 @@ namespace CafeEmployeeTracker.API.Controllers.Cafes
         public async Task<IActionResult> DeleteCafe(Guid id)
         {
             var result = await _mediator.Send(new DeleteCafeCommand(id));
-            if (!result.Equals(Unit.Value))
+            if (result.Equals(Unit.Value))
             {
                 return NoContent();
             }

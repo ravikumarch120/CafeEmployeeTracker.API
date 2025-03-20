@@ -7,9 +7,9 @@ using CafeEmployeeTracker.Domain.Entity;
 
 namespace CafeEmployeeTracker.Application.Commands.Cafe
 {
-    public record CreateCafeCommand(string Name, string Description, string Location) : IRequest<Guid>;
+    public record CreateCafeCommand(string Name, string Description, string Location) : IRequest<Domain.Entity.Cafe>;
  
-public class CreateCafeCommandHandler : IRequestHandler<CreateCafeCommand, Guid>
+public class CreateCafeCommandHandler : IRequestHandler<CreateCafeCommand, Domain.Entity.Cafe>
     {
         private readonly ICafeRepository _cafeRepository;
 
@@ -18,7 +18,7 @@ public class CreateCafeCommandHandler : IRequestHandler<CreateCafeCommand, Guid>
             _cafeRepository = cafeRepository;
         }
 
-        public async Task<Guid> Handle(CreateCafeCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Entity.Cafe> Handle(CreateCafeCommand request, CancellationToken cancellationToken)
         {
             var newCafe = new Domain.Entity.Cafe
             {
@@ -30,7 +30,7 @@ public class CreateCafeCommandHandler : IRequestHandler<CreateCafeCommand, Guid>
             };
 
             await _cafeRepository.CreateAsync(newCafe);
-            return newCafe.Id;
+            return newCafe;
         }
     }
 }
