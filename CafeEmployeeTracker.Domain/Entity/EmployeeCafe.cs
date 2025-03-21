@@ -29,5 +29,6 @@ namespace CafeEmployeeTracker.Domain.Entity
 
         [ForeignKey("CafeId")]
         public Cafe Cafe { get; set; }
+
     }
 }

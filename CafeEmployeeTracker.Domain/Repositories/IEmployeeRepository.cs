@@ -9,6 +9,7 @@ namespace CafeEmployeeTracker.Domain.Repositories
 {
     public interface IEmployeeRepository
     {
+        Task<IEnumerable<(Employee Employee, string CafeId, string StartDate, string CafeName )>> GetAllEmployeeDetailsWithCafeAsync();
         Task<Employee> GetByIdAsync(string id);
         Task<List<Employee>> GetAllAsync(Guid? cafeId);
         Task CreateAsync(Employee employee);
@@ -16,6 +17,8 @@ namespace CafeEmployeeTracker.Domain.Repositories
 
         Task UpdateEmployeeDetailsAsync(Employee employee);
         Task DeleteEmployeeAsync(Employee employee);
-         Task<IEnumerable<(Employee Employee, DateTime StartDate, string CafeName)>> GetEmployeesByCafeIdAsync(Guid cafeId);
+
+        Task<(Employee Employee, string CafeId, string StartDate, string CafeName)?> GetEmployeeCafeDetailsAsync(string EmpId);
+        Task<IEnumerable<(Employee Employee, DateTime StartDate, string CafeName )>> GetEmployeesByCafeIdAsync(Guid cafeId);
     }
 }

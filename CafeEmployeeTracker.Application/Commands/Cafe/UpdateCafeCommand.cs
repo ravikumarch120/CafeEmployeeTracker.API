@@ -24,7 +24,7 @@ namespace CafeEmployeeTracker.Application.Commands.Cafe
             if (cafe == null)
             {
                 throw new Exception("Cafe not found");
-            }
+            }           
             cafe.Name = request.Name;
             cafe.Description = request.Description;
             cafe.Logo = request.Logo;

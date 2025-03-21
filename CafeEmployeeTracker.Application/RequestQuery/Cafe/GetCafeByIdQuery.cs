@@ -20,6 +20,7 @@ namespace CafeEmployeeTracker.Application.RequestQuery.Cafe
         public async Task<CafeDto> Handle(GetCafeByIdQuery request, CancellationToken cancellationToken)
         {
             var cafe = await _cafeRepository.GetCafeByIdAsync(request.Id);
+          
             if (cafe == null)
             {
                 throw new Exception("Cafe not found");

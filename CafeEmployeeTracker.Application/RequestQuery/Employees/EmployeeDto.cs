@@ -1,6 +1,7 @@
 ﻿using CafeEmployeeTracker.Domain.Entity;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Xml.Linq;
+using System;
 
 namespace CafeEmployeeTracker.Application.RequestQuery.Employees
 {
@@ -13,7 +14,9 @@ namespace CafeEmployeeTracker.Application.RequestQuery.Employees
         public string? PhoneNumber { get; set; } // Phone number of the employee
         public int? DaysWorked { get; set; } = 0; // Number of days the employee worked. It must be an integer and is derived from the current date minus the start date of the employee in the cafe
         public string? CafeName { get; set; } // Café’s name that the employee is under [leave blank if not assigned yet]
-        public EmployeeDto()
+        public Guid? CafeId { get; set; }
+        public string StartDate { get; set; }
+         public EmployeeDto()
         {
             
         }

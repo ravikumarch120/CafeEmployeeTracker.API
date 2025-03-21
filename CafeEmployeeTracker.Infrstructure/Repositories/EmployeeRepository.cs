@@ -43,7 +43,7 @@ namespace CafeEmployeeTracker.Infrstructure.Repositories
 
         public async Task DeleteEmployeeAsync(Employee employee)
         {
-           
+
             _cafeEmployeeTrackerDbContext.Employees.Remove(employee);
             await _cafeEmployeeTrackerDbContext.SaveChangesAsync();
         }
@@ -69,7 +69,7 @@ namespace CafeEmployeeTracker.Infrstructure.Repositories
             return employee;
         }
 
- 
+
 
         public async Task<IEnumerable<(Employee Employee, DateTime StartDate, string CafeName)>> GetEmployeesByCafeIdAsync(Guid cafeId)
         {
@@ -107,5 +107,46 @@ namespace CafeEmployeeTracker.Infrstructure.Repositories
             _cafeEmployeeTrackerDbContext.Employees.Update(existingEmployee);
             await _cafeEmployeeTrackerDbContext.SaveChangesAsync();
         }
+               
+        public async Task<IEnumerable<(Employee Employee, string CafeId, string StartDate, string CafeName)>> GetAllEmployeeDetailsWithCafeAsync()
+        {
+            var result = await _cafeEmployeeTrackerDbContext.EmployeeCafes
+                .Include(ec => ec.Employee)
+                .Include(ec => ec.Cafe)
+                .Select(ec => new
+                {
+                    Employee = ec.Employee,
+                    CafeId = ec.CafeId.ToString(),
+                    StartDate = ec.StartDate.ToString("yyyy-MM-dd"),
+                    CafeName = ec.Cafe.Name,                    
+                })
+                .ToListAsync();
+
+            return result.Select(r => (r.Employee, r.CafeId, r.StartDate, r.CafeName));
+        }
+
+        public async Task<(Employee Employee, string CafeId, string StartDate, string CafeName)?> GetEmployeeCafeDetailsAsync(string EmpId)
+        {
+            var result = await _cafeEmployeeTrackerDbContext.EmployeeCafes
+                .Include(ec => ec.Employee)
+                .Include(ec => ec.Cafe)
+                .Where(ec => ec.Employee.Id == EmpId)
+                .Select(ec => new
+                {
+                    Employee = ec.Employee,
+                    CafeId = ec.CafeId.ToString(),
+                    StartDate = ec.StartDate.ToString("yyyy-MM-dd"),
+                    CafeName = ec.Cafe.Name,
+                })
+                .FirstOrDefaultAsync();
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return (result.Employee, result.CafeId, result.StartDate, result.CafeName);
+        }
+
     }
 }

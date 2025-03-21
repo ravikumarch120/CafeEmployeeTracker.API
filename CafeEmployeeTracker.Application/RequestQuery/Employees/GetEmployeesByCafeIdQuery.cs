@@ -25,7 +25,7 @@ namespace CafeEmployeeTracker.Application.RequestQuery.Employees
             {
                 throw new Exception("Cafe not found");
             }
-            var employees = await _employeeRepository.GetEmployeesByCafeIdAsync(cafe.Id);
+            var employees = await _employeeRepository.GetEmployeesByCafeIdAsync(request.cafeId);
             return employees.Select(employee => new EmployeeDto
             {
                 Id = !string.IsNullOrEmpty(employee.Employee.Id) ? employee.Employee.Id : string.Empty,
@@ -33,7 +33,9 @@ namespace CafeEmployeeTracker.Application.RequestQuery.Employees
                 PhoneNumber = employee.Employee.PhoneNumber ?? string.Empty,
                 DaysWorked = (DateTime.UtcNow - employee.StartDate).Days,
                 Name = employee.Employee.Name ?? string.Empty,
-                CafeName = employee.CafeName ?? string.Empty
+                CafeName = employee.CafeName ?? string.Empty,
+                CafeId = request.cafeId,
+                 StartDate = employee.StartDate.ToString("yyyy-MM-dd")
             });
         }
     }
