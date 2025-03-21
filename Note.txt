@@ -1,0 +1,3 @@
+HI Team,
+please take this db scripts and execute in SQL server.
+All the tables are created in the database.And sample data aslo provied . Thank you
