@@ -26,6 +26,22 @@ namespace CafeEmployeeTracker.API.Controllers.Employee
         {
             var query = new GetEmployeesByCafeIdQuery(cafeId);
             var result = await _mediator.Send(query);
+            try
+            {
+                //  Sample Try Catch Executon
+                // Bug fix: Check if result is null and return NotFound
+                if (result == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+
+                
+                throw;
+            }
+
             return Ok(result);
         }
 
@@ -38,6 +54,19 @@ namespace CafeEmployeeTracker.API.Controllers.Employee
         {
             var query = new GetEmployeesByIdQuery(id);
             var result = await _mediator.Send(query);
+            // Test Hello Hi
+            // Gottam 
+            // Caup lu kodukuunava , 
+            // tea cuyps
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             return Ok(result);
         }
 
